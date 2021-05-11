@@ -4,12 +4,17 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"time"
 
 	"github.com/cisco/senml"
 	"github.com/ifraiot/machine-simulation/mqtt"
 )
+
+func init() {
+	rand.Seed(time.Now().Unix())
+}
 
 type Machine struct {
 	MachineName string `json:"name"`
@@ -39,10 +44,10 @@ func main() {
 		)
 
 		for {
+			var condition = 1.0
 
-			condition := 1.0
-			outputQty := 10.0
-			rejectedOutputQty := 0.0
+			outputQty := float64(randInt(5, 20))
+			rejectedOutputQty := float64(randInt(0, 7))
 
 			s := senml.SenML{
 				Records: []senml.SenMLRecord{
@@ -66,7 +71,11 @@ func main() {
 		}
 
 	}
+}
 
+// randInt randoms integer between min and max inclusively using "math/rand" package.
+func randInt(min, max int) int {
+	return rand.Intn((max - min) + 1) + min
 }
 
 func loadMcConfig(fileName string) ([]Machine, error) {
