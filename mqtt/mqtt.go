@@ -27,11 +27,10 @@ func NewMQTT(broker, port, username, password string) *MQTT {
 	opts := mqtt.NewClientOptions()
 
 	opts.AddBroker(fmt.Sprintf("tcp://%s:%s", broker, port))
-	// opts.SetClientID(username)
-	// opts.SetUsername(username)
-	// opts.SetPassword(password)
-	opts.SetUsername("06ddacef-8923-422b-afe5-73eb418333ff")
-	opts.SetPassword("a3358207-8677-4fb5-b244-81efc4259000")
+	opts.SetClientID(username)
+	opts.SetUsername(username)
+	opts.SetPassword(password)
+
 	opts.SetDefaultPublishHandler(messagePubHandler)
 	opts.OnConnect = connectHandler
 	opts.OnConnectionLost = connectLostHandler
